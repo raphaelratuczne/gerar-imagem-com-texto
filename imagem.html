@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>imagem</title>
+    <style media="screen">
+      @font-face {
+        font-family: 'Font_Rodona-Regular';
+        src: url('./Font_Rodona/Font_Rodona-Regular_BETA.ttf');
+      }
+      p {
+        font-family: 'Font_Rodona-Regular';
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <canvas id="myCanvas" width="800" height="800"></canvas> -->
+    <button id="btn" type="button" name="button" onclick="teste()">teste</button>
+    <div id="teste"></div>
+    <p>amor em estampa</p>
+  </body>
+  <script type="text/javascript">
+    window.onload = function() {
+      let txt = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+      // let c = document.getElementById('myCanvas').getContext('2d');
+      let canvas = document.createElement('canvas');
+      canvas.setAttribute('id', 'canv');
+      canvas.width = 800;
+      canvas.height = 800;
+      let c = canvas.getContext('2d');
+      c.fillStyle = '#424143';
+      c.textAlign = 'center';
+      let imageObj = new Image();
+      imageObj.onload = function() {
+        c.drawImage(imageObj, 0, 0, 800, 800);
+        c.font = '42px Font_Rodona-Regular';
+        c.fillText('Minha Terapia', 400, 130);
+        c.font = '26px Font_Rodona-Regular';
+        printAtWordWrap(c, txt, 400, 200, 30, 600);
+        document.getElementById('teste').appendChild(canvas);
+      }
+      imageObj.src = 'amor-em-estampa-padrao-instagram.png';
+    }
+
+    function teste() {
+      let canv = document.getElementById('canv');
+      console.log(canv);
+      console.log(canv.toDataURL());
+    }
+
+    function printAtWordWrap(context , text, x, y, lineHeight, fitWidth) {
+      fitWidth = fitWidth || 0;
+
+      if (fitWidth <= 0) {
+        context.fillText( text, x, y );
+        return;
+      }
+      let words = text.split(' '),
+      currentLine = 0,
+      idx = 1;
+      while (words.length > 0 && idx <= words.length) {
+        let str = words.slice(0, idx).join(' ');
+        let w = context.measureText(str).width;
+        if ( w > fitWidth ) {
+          if (idx == 1) {
+            idx = 2;
+          }
+          context.fillText( words.slice(0,idx-1).join(' '), x, y + (lineHeight*currentLine) );
+          currentLine++;
+          words = words.splice(idx-1);
+          idx = 1;
+        }
+        else {
+          idx++;
+        }
+      }
+      if (idx > 0) context.fillText( words.join(' '), x, y + (lineHeight*currentLine) );
+    }
+  </script>
+</html>
